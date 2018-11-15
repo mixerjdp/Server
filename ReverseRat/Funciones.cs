@@ -64,63 +64,63 @@ namespace ReverseRat
        {
            OperatingSystem osInfo = Environment.OSVersion;
            string os = osInfo.ToString();
-           string Sistema = "";
+           string sistema = "Windows";
            try
            {
                if (os.Contains("Microsoft Windows NT 5.1.2600"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.1.2600", "Windows XP"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.1.2600", "Windows XP"));
                }
                if (os.Contains("Microsoft Windows 4.10.1998"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.1.2600", "Windows 98"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.1.2600", "Windows 98"));
                }
                if (os.Contains("Microsoft Windows 4.10.2222"))
                {
-                   Sistema = (os.Replace("Microsoft Windows 4.10.2222", "Windows 98 SE"));
+                   sistema = (os.Replace("Microsoft Windows 4.10.2222", "Windows 98 SE"));
                }
                if (os.Contains("Microsoft Windows NT 5.0.2195"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.0.2195", "Windows 2000"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.0.2195", "Windows 2000"));
                }
                if (os.Contains("Microsoft Windows 4.90.3000"))
                {
-                   Sistema = (os.Replace("Microsoft Windows 4.90.3000", "Windows Me"));
+                   sistema = (os.Replace("Microsoft Windows 4.90.3000", "Windows Me"));
                }
                if (os.Contains("Microsoft Windows NT 5.2.3790"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.2.3790", "Windows XP 64-bit Edition 2003"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.2.3790", "Windows XP 64-bit Edition 2003"));
                }
                if (os.Contains("Microsoft Windows NT 5.2.3790"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.2.3790", "Windows Server 2003"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.2.3790", "Windows Server 2003"));
                }
                if (os.Contains("Microsoft Windows NT 5.2.3790"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.2.3790", "Windows XP Professional x64 Edition"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.2.3790", "Windows XP Professional x64 Edition"));
                }
                if (os.Contains("Microsoft Windows NT 6.0.6001"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 6.0", "Windows Vista"));
+                   sistema = (os.Replace("Microsoft Windows NT 6.0", "Windows Vista"));
                }
                if (os.Contains("Microsoft Windows NT 6.0.6002"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 6.0.6002", "Windows Vista Ultimate"));
+                   sistema = (os.Replace("Microsoft Windows NT 6.0.6002", "Windows Vista Ultimate"));
                }
                if (os.Contains("Microsoft Windows NT 5.2.4500"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 5.2.4500", "Windows Home Server"));
+                   sistema = (os.Replace("Microsoft Windows NT 5.2.4500", "Windows Home Server"));
                }
                if (os.Contains("Microsoft Windows NT 6.1.7600"))
                {
-                   Sistema = (os.Replace("Microsoft Windows NT 6.1.7600", "Windows 7"));
+                   sistema = (os.Replace("Microsoft Windows NT 6.1.7600", "Windows 7"));
                }
            }
            catch (Exception k)
            {
-               Sistema = ("Unknown OS");
+               sistema = ("Unknown OS");
            }
-           return Sistema;
+           return sistema;
        }
 
         //Obtiene Cadena aleatoria mayusculas y minusculas
@@ -140,7 +140,7 @@ namespace ReverseRat
 
        public void Hola() // Manda un mensaje de texto
        {
-           MessageBox.Show("hola");
+           MessageBox.Show(@"hola");
        }
 
         public void AgregaHash(string cadHash)

