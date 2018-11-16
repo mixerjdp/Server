@@ -1,6 +1,6 @@
 namespace ReverseRat
 {
-    partial class Form1
+    partial class FrmDummy
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,15 @@ namespace ReverseRat
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // FrmDummy
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 264);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(379, 325);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Name = "FrmDummy";
             this.Opacity = 0D;
-            this.Text = "Form1";
+            this.Text = "Forma";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.ResumeLayout(false);
