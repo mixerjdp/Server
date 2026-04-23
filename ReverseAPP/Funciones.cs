@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 
 
-namespace ReverseRat
+namespace ReverseAPP
 {
 
     class IniFile   // revision 11
@@ -58,7 +58,7 @@ namespace ReverseRat
 
 
 
-    // Funciones de todo tipo para operación del RAT
+    // Funciones de todo tipo para operación del APP
     class Funciones
     {
 

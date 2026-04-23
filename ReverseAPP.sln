@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseRat", "ReverseRat\ReverseRat.csproj", "{1FAB516A-B621-4DE4-8B42-EC133B9173D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAPP", "ReverseAPP\ReverseAPP.csproj", "{1FAB516A-B621-4DE4-8B42-EC133B9173D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

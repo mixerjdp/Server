@@ -9,8 +9,8 @@
     <ProjectGuid>{1FAB516A-B621-4DE4-8B42-EC133B9173D9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReverseRat</RootNamespace>
-    <AssemblyName>ReverseRat</AssemblyName>
+    <RootNamespace>ReverseAPP</RootNamespace>
+    <AssemblyName>ReverseAPP</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
